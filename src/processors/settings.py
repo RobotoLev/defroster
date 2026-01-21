@@ -48,6 +48,7 @@ class SettingsProcessor(BaseProcessor):
                         args=(log_file_path,)
                     )
                     thread.start()
+                    self.calculate_processor.preparer_thread = thread
                     return AppState.CALCULATE
             self.manager.process_events(event)
 
