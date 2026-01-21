@@ -3,8 +3,9 @@ import pygame
 
 pygame.init()
 
-BASIC_WINDOW_SIZE = (800, 600)
+BASIC_WINDOW_SIZE = (200, 200)
 screen = pygame.display.set_mode(BASIC_WINDOW_SIZE)
+pygame.display.set_caption("defroster")
 
 from src.processors import *
 

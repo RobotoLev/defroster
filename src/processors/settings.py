@@ -15,7 +15,7 @@ class SettingsProcessor(BaseProcessor):
         super().__init__()
         self.manager = pygame_gui.UIManager(pygame.display.get_window_size())
         self.openfile_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(50, 50, 150, 100),
+            relative_rect=pygame.Rect(25, 50, 150, 100),
             text="Open log file",
             manager=self.manager,
         )
