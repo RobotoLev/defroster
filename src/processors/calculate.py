@@ -200,9 +200,9 @@ class DetailedScoreboard:
                     self.animating = False
                 else:
                     if diff > 0:
-                        self.current_rect.y += max(1., diff * 0.1)
+                        self.current_rect.y += min(5., max(1., diff * 0.1))
                     else:
-                        self.current_rect.y += min(-1., diff * 0.1)
+                        self.current_rect.y += max(-5., min(-1., diff * 0.1))
 
         def set_index(self, index: int):
             self.current_index = self.target_index = index
@@ -487,7 +487,7 @@ class DefrostProcessor(BaseProcessor):
                 self.current_y = self.target_y
                 self.animating = False
             else:
-                self.current_y += max(1., diff * 0.1)
+                self.current_y += min(5., max(1., diff * 0.1))
 
 
         pygame.display.flip()
