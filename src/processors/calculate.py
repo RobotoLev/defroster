@@ -332,7 +332,7 @@ class DetailedScoreboard:
         return scoreboard
 
     def draw(self, surface: pygame.Surface):
-        for row in self.rows:
+        for row in self.rows[::-1]:
             row.draw(surface)
 
     def update(self):
