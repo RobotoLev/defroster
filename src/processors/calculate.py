@@ -13,6 +13,9 @@ from .base import BaseProcessor, AppState, FRAMERATE, settings_storage
 
 FONT = pygame.freetype.SysFont(None, 20)
 
+LINE_BOOST_SPEED_CAP = 8.
+SCREEN_SPEED_CAP = 10.
+
 
 def fade_color(color1: pygame.Color, color2: pygame.Color, power: float) -> pygame.Color:
     if power < 0:
@@ -201,9 +204,9 @@ class DetailedScoreboard:
                     self.animating = False
                 else:
                     if diff > 0:
-                        self.current_rect.y += min(5., max(1., diff * 0.1))
+                        self.current_rect.y += min(LINE_BOOST_SPEED_CAP, max(1., diff * 0.1))
                     else:
-                        self.current_rect.y += max(-5., min(-1., diff * 0.1))
+                        self.current_rect.y += max(-LINE_BOOST_SPEED_CAP, min(-1., diff * 0.1))
 
         def set_index(self, index: int):
             self.current_index = self.target_index = index
@@ -487,7 +490,7 @@ class DefrostProcessor(BaseProcessor):
                 self.current_y = self.target_y
                 self.animating = False
             else:
-                self.current_y += min(10., max(1., diff * 0.1))
+                self.current_y += min(SCREEN_SPEED_CAP, max(1., diff * 0.1))
 
 
         pygame.display.flip()
