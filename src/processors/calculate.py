@@ -1,5 +1,6 @@
 import threading
 
+from pathlib import Path
 import pygame
 import pygame.freetype
 
@@ -7,7 +8,7 @@ from dataclasses import dataclass
 from typing import Generator
 import xml.etree.ElementTree as ET
 
-from .base import BaseProcessor, AppState, FRAMERATE
+from .base import BaseProcessor, AppState, FRAMERATE, settings_storage
 
 
 FONT = pygame.freetype.SysFont(None, 20)
@@ -282,7 +283,7 @@ class DetailedScoreboard:
             line.last_submission_time_ms = max(line.last_submission_time_ms, submission.contest_time_ms)
 
     @staticmethod
-    def from_yandex_contest_xml(log_file_path: str) -> 'DetailedScoreboard':
+    def from_yandex_contest_xml(log_file_path: Path) -> 'DetailedScoreboard':
         tree = ET.parse(log_file_path)
         root = tree.getroot()
 
@@ -290,7 +291,7 @@ class DetailedScoreboard:
         contest_duration_str = root.find('settings').find('duration').text
         h, m, s = contest_duration_str.split(':')
         contest_duration_seconds = int(h) * 60 * 60 + int(m) * 60 + int(s)
-        warm_duration_seconds = contest_duration_seconds - 60 * 60
+        warm_duration_seconds = contest_duration_seconds - settings_storage.freeze_duration_seconds
 
         scoreboard = DetailedScoreboard(contest_name, contest_duration_seconds, warm_duration_seconds)
 
@@ -367,7 +368,6 @@ class DetailedScoreboard:
                 new_rows = self.rows[::]
                 new_rows.sort()
                 new_index = new_rows.index(row)
-                print(self.defrosting_index, new_index)
                 row.start_animation(target_index=new_index)
                 for i in range(new_index, self.defrosting_index):
                     self.rows[i].start_animation(target_index=i+1)
@@ -387,8 +387,8 @@ class CalculateProcessor(BaseProcessor):
         self.detailed_scoreboard: DetailedScoreboard | None = None
         self.preparer_thread: threading.Thread | None = None
 
-    def prepare_defrost_data(self, log_file_path: str):
-        self.detailed_scoreboard = DetailedScoreboard.from_yandex_contest_xml(log_file_path)
+    def prepare_defrost_data(self):
+        self.detailed_scoreboard = DetailedScoreboard.from_yandex_contest_xml(settings_storage.log_file_path)
 
     def process(self) -> AppState:
         screen = pygame.display.get_surface()
@@ -487,7 +487,7 @@ class DefrostProcessor(BaseProcessor):
                 self.current_y = self.target_y
                 self.animating = False
             else:
-                self.current_y += min(5., max(1., diff * 0.1))
+                self.current_y += min(10., max(1., diff * 0.1))
 
 
         pygame.display.flip()

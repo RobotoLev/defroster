@@ -1,10 +1,22 @@
 import pygame
 
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from enum import Enum
+from pathlib import Path
+from typing import Final
 
 
 FRAMERATE = 30
+
+
+@dataclass
+class SettingsStorage:
+    log_file_path: Path | None = None
+    freeze_duration_seconds: int | None = None
+
+
+settings_storage: Final[SettingsStorage] = SettingsStorage()
 
 
 class AppState(Enum):
