@@ -4,6 +4,9 @@ from abc import ABC, abstractmethod
 from enum import Enum
 
 
+FRAMERATE = 30
+
+
 class AppState(Enum):
     SETTINGS = 1
     CALCULATE = 2

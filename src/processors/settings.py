@@ -5,7 +5,7 @@ import threading
 import tkinter
 import tkinter.filedialog
 
-from .base import BaseProcessor, AppState
+from .base import BaseProcessor, AppState, FRAMERATE
 
 
 class SettingsProcessor(BaseProcessor):
@@ -26,7 +26,7 @@ class SettingsProcessor(BaseProcessor):
         from .calculate import CalculateProcessor
         self.calculate_processor: CalculateProcessor
 
-        time_delta = self.clock.tick(60) / 1000.
+        time_delta = self.clock.tick(FRAMERATE) / 1000.
         screen = pygame.display.get_surface()
 
         for event in pygame.event.get():

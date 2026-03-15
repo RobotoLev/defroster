@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from typing import Generator
 import xml.etree.ElementTree as ET
 
-from .base import BaseProcessor, AppState
+from .base import BaseProcessor, AppState, FRAMERATE
 
 
 FONT = pygame.freetype.SysFont(None, 20)
@@ -408,7 +408,7 @@ class CalculateProcessor(BaseProcessor):
                 return AppState.QUIT
 
         pygame.display.flip()
-        self.clock.tick(60)
+        self.clock.tick(FRAMERATE)
         return AppState.CALCULATE
 
 
@@ -491,5 +491,5 @@ class DefrostProcessor(BaseProcessor):
 
 
         pygame.display.flip()
-        self.clock.tick(30)
+        self.clock.tick(FRAMERATE)
         return AppState.DEFROST
