@@ -1,2 +1,3 @@
 ### Build
-`pyinstaller --onefile --noconsole src/main.py`
+`pyinstaller --onefile --noconsole --add-data=res:res src/main.py
+`
