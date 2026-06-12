@@ -5,7 +5,7 @@ import pygame
 import pygame.freetype
 
 from dataclasses import dataclass
-from typing import Generator
+from typing import Iterator
 import xml.etree.ElementTree as ET
 
 from .base import BaseProcessor, AppState, FRAMERATE, settings_storage
@@ -235,9 +235,6 @@ class DetailedScoreboard:
                 return self.penalty() < other.penalty()
             return self.last_submission_time_ms < other.last_submission_time_ms
 
-    contest_name: str
-    contest_duration_seconds: int
-    warm_duration_seconds: int
     problems: list['DetailedScoreboard.Problem'] = []
     problem_lookup: dict[str, int] = {}
     rows: list['DetailedScoreboard.Row'] = []
@@ -345,7 +342,7 @@ class DetailedScoreboard:
     def height(self) -> int:
         return self.Row.HEIGHT * len(self.rows)
 
-    def defrost(self) -> Generator[int]:
+    def defrost(self) -> Iterator[int]:
         if self.defrosting_index is None:
             self.defrosting_index = len(self.rows) - 1
             self.rows[self.defrosting_index].selected = True
@@ -476,7 +473,7 @@ class DefrostProcessor(BaseProcessor):
                 return AppState.QUIT
             if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
                 self.toggle_fullscreen()
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT) or (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
                 new_defrosting_index = next(self.detailed_scoreboard.defrost())
                 if new_defrosting_index != self.defrosting_index:
                     self.target_y += self.detailed_scoreboard.Row.HEIGHT

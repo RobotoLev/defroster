@@ -18,7 +18,7 @@ class SettingsProcessor(BaseProcessor):
         pygame.display.set_mode(self.WINDOW_SIZE)
         self.manager = pygame_gui.UIManager(
             pygame.display.get_window_size(),
-            Path.cwd().parent / "res" / "theme.json"
+            Path(__file__).resolve().parent.parent.parent / "res" / "theme.json"
         )
         self.openfile_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(25, 25, 150, 50),
