@@ -11,7 +11,7 @@ from .base import BaseProcessor, AppState, FRAMERATE, settings_storage, Defrosti
 
 class SettingsProcessor(BaseProcessor):
     calculate_processor = None
-    WINDOW_SIZE = (450, 450)
+    WINDOW_SIZE = (500, 525)
 
     def __init__(self):
         super().__init__()
@@ -88,6 +88,18 @@ class SettingsProcessor(BaseProcessor):
             manager=self.manager,
             anchors={
                 'top_target': self.defrosting_mode,
+            }
+        )
+
+        self.help_text = pygame_gui.elements.UITextBox(
+            relative_rect=pygame.Rect(25, 25, 500, 300),
+            html_text="Справка по управлению:\n"
+                      "Стрелка \"вправо\" или клик ЛКМ - следующий шаг разморозки\n"
+                      "Кнопка F - переключение полноэкранного/оконного режимов\n"
+                      "Кнопка Esc - завершение работы программы",
+            manager=self.manager,
+            anchors={
+                'top_target': self.start_button,
             }
         )
 

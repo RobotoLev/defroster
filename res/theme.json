@@ -79,5 +79,22 @@
       "normal_text": "black",
       "selected_text": "black"
     }
+  },
+  "text_box": {
+    "colours": {
+      "dark_bg": "white",
+      "normal_text": "black",
+      "normal_border": "white"
+
+    },
+    "misc": {
+      "border_width": {
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "bottom": 0
+      },
+      "shadow_width": 0
+    }
   }
 }
