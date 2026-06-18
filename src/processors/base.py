@@ -10,11 +10,17 @@ from typing import Final
 FRAMERATE = 30
 
 
+class DefrostingOrder(Enum):
+    left_to_right = 'left_to_right'
+    order_by_time = 'order_by_time'
+
+
 @dataclass
 class SettingsStorage:
     log_file_path: Path | None = None
     freeze_duration_seconds: int | None = None
     contest_name: str | None = None
+    defrosting_order: DefrostingOrder = DefrostingOrder.left_to_right
 
 
 settings_storage: Final[SettingsStorage] = SettingsStorage()

@@ -6,12 +6,12 @@ import threading
 import tkinter
 import tkinter.filedialog
 
-from .base import BaseProcessor, AppState, FRAMERATE, settings_storage
+from .base import BaseProcessor, AppState, FRAMERATE, settings_storage, DefrostingOrder
 
 
 class SettingsProcessor(BaseProcessor):
     calculate_processor = None
-    WINDOW_SIZE = (450, 330)
+    WINDOW_SIZE = (450, 450)
 
     def __init__(self):
         super().__init__()
@@ -64,12 +64,30 @@ class SettingsProcessor(BaseProcessor):
                 'top_target': self.contest_name_label,
             }
         )
+        self.defrosting_mode_label = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect(25, 10, -1, -1),
+            manager=self.manager,
+            text="Режим разморозки:",
+            anchors={
+                'top_target': self.contest_name_entry_line,
+            }
+        )
+        defrosting_mode_options = [('Слева направо', DefrostingOrder.left_to_right.value), ('По порядку отправки', DefrostingOrder.order_by_time.value)]
+        self.defrosting_mode = pygame_gui.elements.UIDropDownMenu(
+            relative_rect=pygame.Rect(25, 10, 200, 30),
+            options_list=defrosting_mode_options,
+            starting_option=defrosting_mode_options[0],
+            manager=self.manager,
+            anchors={
+                'top_target': self.defrosting_mode_label,
+            }
+        )
         self.start_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(25, 10, 150, 50),
             text="Запустить!",
             manager=self.manager,
             anchors={
-                'top_target': self.contest_name_entry_line,
+                'top_target': self.defrosting_mode,
             }
         )
 
@@ -104,6 +122,8 @@ class SettingsProcessor(BaseProcessor):
                     settings_storage.freeze_duration_seconds = int(self.freeze_duration_entry_line.text)
                     if self.contest_name_entry_line.text:
                         settings_storage.contest_name = self.contest_name_entry_line.text
+                    settings_storage.defrosting_order = DefrostingOrder(self.defrosting_mode.selected_option[1])
+                    print(settings_storage.defrosting_order)
                     thread = threading.Thread(
                         target=self.calculate_processor.prepare_defrost_data,
                     )

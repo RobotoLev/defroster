@@ -47,6 +47,12 @@
       "title_bar_height": 28
     }
   },
+  "button": {
+    "colours": {
+      "normal_bg": "gray",
+      "normal_text": "white"
+    }
+  },
   "label": {
     "colours": {
       "normal_text": "#000000"
@@ -57,6 +63,21 @@
       "dark_bg": "white",
       "normal_text": "black",
       "text_cursor": "black"
+    }
+  },
+  "drop_down_menu.button": {
+    "colours": {
+      "normal_bg": "white",
+      "normal_text": "black"
+    }
+  },
+  "drop_down_menu.#drop_down_options_list.button": {
+    "colours": {
+      "normal_bg": "white",
+      "hovered_bg": "lightgray",
+      "selected_bg": "gray",
+      "normal_text": "black",
+      "selected_text": "black"
     }
   }
 }

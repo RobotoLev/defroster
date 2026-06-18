@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from typing import Iterator
 import xml.etree.ElementTree as ET
 
-from .base import BaseProcessor, AppState, FRAMERATE, settings_storage
+from .base import BaseProcessor, AppState, FRAMERATE, settings_storage, DefrostingOrder
 
 
 FONT = pygame.freetype.SysFont(None, 20)
@@ -317,6 +317,7 @@ class DetailedScoreboard:
         for index, row in enumerate(scoreboard.rows):
             row.set_index(index)
             for cell in row.cells:
+                cell.submissions_frozen.sort(key=lambda sub: sub.contest_time_ms)
                 cell.refresh_text_and_background()
 
         while len(scoreboard.rows) > 0 and \
@@ -350,7 +351,10 @@ class DetailedScoreboard:
         row = self.rows[self.defrosting_index]
         blinking_cell: 'DetailedScoreboard.Cell | None' = next(filter(lambda cell: cell.is_blinking, row.cells), None)
         if blinking_cell is None:
-            freezing_cell = next(filter(lambda cell: len(cell.submissions_frozen) > 0, row.cells), None)
+            freezing_cells = list(filter(lambda cell: len(cell.submissions_frozen) > 0, row.cells))
+            if settings_storage.defrosting_order == DefrostingOrder.order_by_time:
+                freezing_cells.sort(key=lambda cell: cell.submissions_frozen[0].contest_time_ms)
+            freezing_cell = freezing_cells[0] if freezing_cells else None
             if freezing_cell is None:
                 if self.defrosting_index > 0:
                     row.selected = False
