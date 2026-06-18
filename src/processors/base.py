@@ -14,6 +14,7 @@ FRAMERATE = 30
 class SettingsStorage:
     log_file_path: Path | None = None
     freeze_duration_seconds: int | None = None
+    contest_name: str | None = None
 
 
 settings_storage: Final[SettingsStorage] = SettingsStorage()

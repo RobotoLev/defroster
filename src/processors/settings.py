@@ -11,7 +11,7 @@ from .base import BaseProcessor, AppState, FRAMERATE, settings_storage
 
 class SettingsProcessor(BaseProcessor):
     calculate_processor = None
-    WINDOW_SIZE = (315, 270)
+    WINDOW_SIZE = (450, 330)
 
     def __init__(self):
         super().__init__()
@@ -49,12 +49,27 @@ class SettingsProcessor(BaseProcessor):
                 'top_target': self.freeze_duration_label,
             }
         )
+        self.contest_name_label = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect(25, 10, -1, -1),
+            text="Название соревнования (по умолчанию - как в системе):",
+            manager=self.manager,
+            anchors={
+                'top_target': self.freeze_duration_entry_line,
+            }
+        )
+        self.contest_name_entry_line = pygame_gui.elements.UITextEntryLine(
+            relative_rect=pygame.Rect(25, 10, 400, 30),
+            manager=self.manager,
+            anchors={
+                'top_target': self.contest_name_label,
+            }
+        )
         self.start_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(25, 10, 150, 50),
             text="Запустить!",
             manager=self.manager,
             anchors={
-                'top_target': self.freeze_duration_entry_line,
+                'top_target': self.contest_name_entry_line,
             }
         )
 
@@ -87,6 +102,8 @@ class SettingsProcessor(BaseProcessor):
             if event.type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == self.start_button:
                 if settings_storage.log_file_path is not None and self.freeze_duration_entry_line.text.isdigit():
                     settings_storage.freeze_duration_seconds = int(self.freeze_duration_entry_line.text)
+                    if self.contest_name_entry_line.text:
+                        settings_storage.contest_name = self.contest_name_entry_line.text
                     thread = threading.Thread(
                         target=self.calculate_processor.prepare_defrost_data,
                     )

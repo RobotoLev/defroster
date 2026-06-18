@@ -287,7 +287,7 @@ class DetailedScoreboard:
         tree = ET.parse(log_file_path)
         root = tree.getroot()
 
-        contest_name = root.find('settings').find('contestName').text
+        contest_name = settings_storage.contest_name or root.find('settings').find('contestName').text
         contest_duration_str = root.find('settings').find('duration').text
         h, m, s = contest_duration_str.split(':')
         contest_duration_seconds = int(h) * 60 * 60 + int(m) * 60 + int(s)
