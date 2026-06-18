@@ -42,7 +42,7 @@ class SettingsProcessor(BaseProcessor):
             }
         )
         self.freeze_duration_entry_line = pygame_gui.elements.UITextEntryLine(
-            relative_rect=pygame.Rect(25, 10, 150, 30),
+            relative_rect=pygame.Rect(25, 10, 60, 30),
             manager=self.manager,
             initial_text="3600",
             anchors={
