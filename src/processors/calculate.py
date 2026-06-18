@@ -353,7 +353,7 @@ class DetailedScoreboard:
         if blinking_cell is None:
             freezing_cells = list(filter(lambda cell: len(cell.submissions_frozen) > 0, row.cells))
             if settings_storage.defrosting_order == DefrostingOrder.order_by_time:
-                freezing_cells.sort(key=lambda cell: cell.submissions_frozen[0].contest_time_ms)
+                freezing_cells.sort(key=lambda cell: cell.submissions_frozen[-1].contest_time_ms)
             freezing_cell = freezing_cells[0] if freezing_cells else None
             if freezing_cell is None:
                 if self.defrosting_index > 0:
